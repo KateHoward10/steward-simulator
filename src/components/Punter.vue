@@ -1,14 +1,14 @@
 <template>
   <div class="punter">
-    <div class="head" :style="{ backgroundColor: punter.hair }"></div>
-    <div class="body" :style="{ backgroundColor: punter.body }"></div>
+    <div class="head" :style="{ backgroundColor: punter.hair || 'tranparent' }"></div>
+    <div class="body" :style="{ backgroundColor: punter.body || 'tranparent' }"></div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Punter',
-  props: { punter: Object },
+  props: { punter: Object }
 }
 </script>
 

@@ -57,14 +57,10 @@ export default {
     this.squares = this.squares.map(s => s === 0 ? s : { seat: s, occupied: !this.emptySeats.includes(s), hair: this.emptySeats.includes(s) ? null : this.getHairColour() });
     const emptySquares = this.squares.map((s, i) => [i, s]).filter(a => a[1] === 0);
     this.punters = this.emptySeats.map(seat => {
-      return { seat, pos: emptySquares[Math.random() * emptySquares.length | 0][0], hair: this.getHairColour(), body: this.getBodyColour() };
+      return { seat, pos: emptySquares[Math.random() * emptySquares.length | 0][0], dir: 'up', hair: this.getHairColour(), body: this.getBodyColour() };
     });
     setInterval(() => {
-      this.punters = this.punters.map(p => {
-        const newPunter = p;
-        newPunter.pos = this.getNewPos(p.pos);
-        return newPunter;
-      });
+      this.punters = this.punters.map(p => this.movePunter(p));
     }, 1000);
   },
   methods: {
@@ -84,9 +80,18 @@ export default {
     getBodyColour() {
       return `hsl(${Math.random() * 360 | 0}, 80%, 40%)`;
     },
-    getNewPos(pos) {
-      const options = [pos - 41, pos + 41, pos - 1, pos - 1].filter(p => this.squares[p] === 0);
-      return options[Math.random() * options.length | 0];
+    movePunter(p) {
+      const newPunter = p;
+      const { pos, dir } = p;
+      const moves = { 'up': -41, 'down': 41, 'left': -1, 'right': 1 };
+      if (this.squares[pos + moves[dir]] === 0) {
+        newPunter.pos = pos + moves[dir];
+      } else {
+        const options = Object.keys(moves).filter(k => this.squares[pos + moves[k]] === 0);
+        newPunter.dir = options[Math.random() * options.length | 0];
+        newPunter.pos = pos + moves[newPunter.dir];
+      }
+      return newPunter;
     }
   },
   components: {
