@@ -1,13 +1,18 @@
 <template>
   <div class="seat">
-    <div v-if="occupied" class="head"></div>
+    <div v-if="occupied" class="head" :style="{ backgroundColor: hairColours[Math.random() * hairColours.length | 0] }"></div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Seat',
-  props: { occupied: Boolean }
+  props: { occupied: Boolean },
+  data() {
+    return {
+      hairColours: ["#222", "#800000", "#cc6600", "#993300", "#ff6600", "#ffcc00", "#999", "#663300"]
+    }
+  }
 }
 </script>
 
