@@ -13,11 +13,12 @@ export default {
 
 <style scoped>
   .seat {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     background-color: #cc3300;
     color: #ffffcc;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    font-size: 14px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
   }
 </style>
