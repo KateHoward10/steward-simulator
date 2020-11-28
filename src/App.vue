@@ -1,7 +1,7 @@
 <template>
   <div v-for="(square, index) in squares" :key="index">
-    <Punter v-if="punters.find(p => p.pos === index)" :hairColour="getHairColour()" />
-    <Seat v-if="square" :number="square" :occupied="!emptySeats.includes(square)" :hairColour="getHairColour()"></Seat>
+    <Punter v-if="punters.find(p => p.pos === index)" :punter="punters.find(p => p.pos === index)" />
+    <Seat v-if="square" :occupied="square.occupied" :hairColour="square.hair"></Seat>
   </div>
 </template>
 
@@ -54,10 +54,18 @@ export default {
   },
   mounted() {
     this.emptySeats = this.getEmptySeats();
+    this.squares = this.squares.map(s => s === 0 ? s : { seat: s, occupied: !this.emptySeats.includes(s), hair: this.emptySeats.includes(s) ? null : this.getHairColour() });
     const emptySquares = this.squares.map((s, i) => [i, s]).filter(a => a[1] === 0);
     this.punters = this.emptySeats.map(seat => {
-      return { pos: emptySquares[Math.random() * emptySquares.length | 0][0], seat };
+      return { seat, pos: emptySquares[Math.random() * emptySquares.length | 0][0], hair: this.getHairColour(), body: this.getBodyColour() };
     });
+    setInterval(() => {
+      this.punters = this.punters.map(p => {
+        const newPunter = p;
+        newPunter.pos = this.getNewPos(p.pos);
+        return newPunter;
+      });
+    }, 1000);
   },
   methods: {
     getEmptySeats() {
@@ -72,6 +80,13 @@ export default {
     },
     getHairColour() {
       return this.hairColours[Math.random() * this.hairColours.length | 0];
+    },
+    getBodyColour() {
+      return `hsl(${Math.random() * 360 | 0}, 80%, 40%)`;
+    },
+    getNewPos(pos) {
+      const options = [pos - 41, pos + 41, pos - 1, pos - 1].filter(p => this.squares[p] === 0);
+      return options[Math.random() * options.length | 0];
     }
   },
   components: {

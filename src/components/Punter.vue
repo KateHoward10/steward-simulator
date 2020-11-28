@@ -1,19 +1,14 @@
 <template>
   <div class="punter">
-    <div class="head" :style="{ backgroundColor: hairColour }"></div>
-    <div class="body" :style="{ backgroundColor: bodyColour }"></div>
+    <div class="head" :style="{ backgroundColor: punter.hair }"></div>
+    <div class="body" :style="{ backgroundColor: punter.body }"></div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Punter',
-  props: { hairColour: String },
-  data() {
-    return {
-      bodyColour: 'hsl(' + (Math.random() * 360) + ', 80%, 40%)'
-    }
-  }
+  props: { punter: Object },
 }
 </script>
 
