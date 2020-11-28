@@ -1,6 +1,6 @@
 <template>
   <div v-for="(square, index) in squares" :key="index">
-    <Punter v-if="!square && punters.includes(index)" :hairColour="getHairColour()" />
+    <Punter v-if="punters.find(p => p.pos === index)" :hairColour="getHairColour()" />
     <Seat v-if="square" :number="square" :occupied="!emptySeats.includes(square)" :hairColour="getHairColour()"></Seat>
   </div>
 </template>
@@ -48,12 +48,16 @@ export default {
         0,0,"KK33","KK32","KK31","KK30","KK29","KK28","KK27",0,0,"KK26","KK25","KK24","KK23","KK22","KK21","KK20","KK19","KK18",0,"KK17","KK16","KK15","KK14","KK13","KK12","KK11","KK10","KK9",0,0,"KK8","KK7","KK6","KK5","KK4","KK3","KK2",0,0,
       ],
       emptySeats: [],
-      punters: [121],
+      punters: [],
       hairColours: ["#222", "#800000", "#cc6600", "#993300", "#ff6600", "#ffcc00", "#999", "#663300"]
     }
   },
   mounted() {
     this.emptySeats = this.getEmptySeats();
+    const emptySquares = this.squares.map((s, i) => [i, s]).filter(a => a[1] === 0);
+    this.punters = this.emptySeats.map(seat => {
+      return { pos: emptySquares[Math.random() * emptySquares.length | 0][0], seat };
+    });
   },
   methods: {
     getEmptySeats() {
