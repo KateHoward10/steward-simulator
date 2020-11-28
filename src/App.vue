@@ -1,7 +1,6 @@
 <template>
-  <p>{{ currentNumber }}</p>
   <div v-for="(square, index) in squares" :key="index">
-    <Seat v-if="square" :seat="square" :onClick="() => guessSeat(square)"></Seat>
+    <Seat v-if="square" :seat="square" :occupied="!emptySeats.includes(square)"></Seat>
   </div>
 </template>
 
@@ -46,22 +45,22 @@ export default {
         0,0,"JJ35","JJ34","JJ33","JJ32","JJ31","JJ30","JJ29",0,"JJ28","JJ27","JJ26","JJ25","JJ24","JJ23","JJ22","JJ21","JJ20","JJ19",0,"JJ18","JJ17","JJ16","JJ15","JJ14","JJ13","JJ12","JJ11","JJ10","JJ9",0,"JJ8","JJ7","JJ6","JJ5","JJ4","JJ3","JJ2",0,0,
         0,0,"KK33","KK32","KK31","KK30","KK29","KK28","KK27",0,0,"KK26","KK25","KK24","KK23","KK22","KK21","KK20","KK19","KK18",0,"KK17","KK16","KK15","KK14","KK13","KK12","KK11","KK10","KK9",0,0,"KK8","KK7","KK6","KK5","KK4","KK3","KK2",0,0,
       ],
-      currentNumber: null
+      emptySeats: []
     }
   },
   mounted() {
-    this.currentNumber = this.getCurrentNumber();
+    this.emptySeats = this.getEmptySeats();
   },
   methods: {
-    guessSeat(number) {
-      if (number === this.currentNumber) {
-        alert("Correct!");
-        this.currentNumber = this.getCurrentNumber();
-      }
-    },
-    getCurrentNumber() {
+    getEmptySeats() {
       const seats = this.squares.filter(s => s);
-      return seats[Math.random() * seats.length | 0];
+      const empty = [];
+      const getSeat = () => seats[Math.random() * seats.length | 0];
+      for (let i = 0; i < 10; i++) {
+        const newSeat = getSeat();
+        empty.push(empty.includes(newSeat) ? getSeat() : newSeat);
+      }
+      return empty;
     }
   },
   components: {
