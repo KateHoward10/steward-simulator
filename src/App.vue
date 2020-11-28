@@ -1,11 +1,13 @@
 <template>
   <div v-for="(square, index) in squares" :key="index">
-    <Seat v-if="square" :seat="square" :occupied="!emptySeats.includes(square)"></Seat>
+    <Punter v-if="!square && punters.includes(index)" :hairColour="getHairColour()" />
+    <Seat v-if="square" :number="square" :occupied="!emptySeats.includes(square)" :hairColour="getHairColour()"></Seat>
   </div>
 </template>
 
 <script>
 import Seat from './components/Seat.vue'
+import Punter from './components/Punter.vue'
 
 export default {
   name: 'App',
@@ -45,7 +47,9 @@ export default {
         0,0,"JJ35","JJ34","JJ33","JJ32","JJ31","JJ30","JJ29",0,"JJ28","JJ27","JJ26","JJ25","JJ24","JJ23","JJ22","JJ21","JJ20","JJ19",0,"JJ18","JJ17","JJ16","JJ15","JJ14","JJ13","JJ12","JJ11","JJ10","JJ9",0,"JJ8","JJ7","JJ6","JJ5","JJ4","JJ3","JJ2",0,0,
         0,0,"KK33","KK32","KK31","KK30","KK29","KK28","KK27",0,0,"KK26","KK25","KK24","KK23","KK22","KK21","KK20","KK19","KK18",0,"KK17","KK16","KK15","KK14","KK13","KK12","KK11","KK10","KK9",0,0,"KK8","KK7","KK6","KK5","KK4","KK3","KK2",0,0,
       ],
-      emptySeats: []
+      emptySeats: [],
+      punters: [121],
+      hairColours: ["#222", "#800000", "#cc6600", "#993300", "#ff6600", "#ffcc00", "#999", "#663300"]
     }
   },
   mounted() {
@@ -61,10 +65,14 @@ export default {
         empty.push(empty.includes(newSeat) ? getSeat() : newSeat);
       }
       return empty;
+    },
+    getHairColour() {
+      return this.hairColours[Math.random() * this.hairColours.length | 0];
     }
   },
   components: {
-    Seat
+    Seat,
+    Punter
   }
 }
 </script>
