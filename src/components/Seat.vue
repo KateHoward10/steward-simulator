@@ -1,13 +1,12 @@
 <template>
-  <div class="seat">
-    {{ seat }}
+  <div class="seat" @click="onClick">
   </div>
 </template>
 
 <script>
 export default {
   name: 'Seat',
-  props: { seat: String }
+  props: { onClick: Function }
 }
 </script>
 
